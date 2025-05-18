@@ -1,7 +1,22 @@
 import requests
 import xml.etree.ElementTree as ET
+import pandas as pd
+import os
+from datetime import datetime, timedelta
 
-# 워드 파일 기반 한글 설명 매핑
+# 저장 경로
+save_dir = r"C:\Users\GME-NOTE\Desktop\EDB_PJT\ORG_DATA\6_날씨 데이터"
+os.makedirs(save_dir, exist_ok=True)
+
+# 날짜 설정
+start_date = datetime.strptime('20130101', "%Y%m%d")
+end_date = datetime.strptime('20131231', "%Y%m%d")
+
+# 지점 ID 및 이름
+station_id = '108'  # 서울
+station_name = '서울'
+
+# 데이터 필드 매핑
 field_mapping = {
     "stnId": "지점 번호",
     "stnNm": "지점명",
@@ -11,11 +26,11 @@ field_mapping = {
     "minTaHrmt": "최저 기온 시각(hhmm)",
     "maxTa": "최고 기온(°C)",
     "maxTaHrmt": "최고 기온 시각(hhmm)",
+    "sumRnDur": "강수 계속시간(hr)",
     "mi10MaxRn": "10분 최다강수량(mm)",
     "mi10MaxRnHrmt": "10분 최다강수 시각(hhmm)",
     "hr1MaxRn": "1시간 최다강수(mm)",
     "hr1MaxRnHrmt": "1시간 최다강수 시각(hhmm)",
-    "sumRnDur": "강수 계속시간(hr)",
     "sumRn": "일강수량(mm)",
     "maxInsWs": "최대 순간풍속(m/s)",
     "maxInsWsWd": "최대 순간 풍속 풍향(16방위)",
@@ -28,7 +43,7 @@ field_mapping = {
     "maxWd": "최다 풍향(16방위)",
     "avgTd": "평균 이슬점온도(°C)",
     "minRhm": "최소 상대습도(%)",
-    "minRhmHrmt": "최소 상대습도 시각(hhmm)",
+    "minRhmHrmt": "평균 상대습도 시각(hhmm)",
     "avgRhm": "평균 상대습도(%)",
     "avgPv": "평균 증기압(hPa)",
     "avgPa": "평균 현지기압(hPa)",
@@ -67,38 +82,107 @@ field_mapping = {
     "sumFogDur": "안개 계속 시간(hr)"
 }
 
-# API 호출
+
+# API 요청 기본 정보
 url = 'http://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList'
-params = {
-    'serviceKey': 'FRBg0qFrrlGH290TSHXY/TnRZnRmiIpIkVoYbNcd98zd3+YCpYKOlgJbrTee+VDIpeCTyPncmPo0g0b1SZAZMg==',
-    'pageNo': '1',
-    'numOfRows': '100',
-    'dataType': 'XML',
-    'dataCd': 'ASOS',
-    'dateCd': 'DAY',
-    'startDt': '20100101',
-    'endDt': '20100601',
-    'stnIds': '108'
-}
+service_key = 'FRBg0qFrrlGH290TSHXY/TnRZnRmiIpIkVoYbNcd98zd3+YCpYKOlgJbrTee+VDIpeCTyPncmPo0g0b1SZAZMg=='
 
-response = requests.get(url, params=params)
-root = ET.fromstring(response.content)
+current_date = start_date
+data_by_year = {}
 
-items = root.find('body').find('items')
-print(f"총 {len(items)}개의 데이터가 수신되었습니다.\n")
+print(f"⏳ 수집 시작: {start_date.strftime('%Y-%m-%d')} ~ {end_date.strftime('%Y-%m-%d')}")
 
-# 데이터 출력
-for idx, item in enumerate(items.findall('item'), start=1):
-    날짜 = item.findtext('tm', 'N/A')
-    지점명 = item.findtext('stnNm', 'N/A')
-    지점번호 = item.findtext('stnId', 'N/A')
-    print(f"[{idx}] 날짜: {날짜} | 지점명: {지점명} ({지점번호})")
-    print("-" * 60)
+while current_date <= end_date:
+    dt_str = current_date.strftime("%Y%m%d")
+    year = current_date.year
 
-    for child in item:
-        tag = child.tag
-        val = child.text.strip() if child.text else 'N/A'
-        label = field_mapping.get(tag, tag)  # 한글 매핑 없으면 그대로 출력
-        print(f"{label:<25}: {val}")
+    params = {
+        'serviceKey': service_key,
+        'pageNo': '1',
+        'numOfRows': '100',
+        'dataType': 'XML',
+        'dataCd': 'ASOS',
+        'dateCd': 'DAY',
+        'startDt': dt_str,
+        'endDt': dt_str,
+        'stnIds': station_id
+    }
 
-    print("=" * 60)
+    # 최대 3회 재시도
+    max_retries = 3
+    for attempt in range(1, max_retries + 1):
+        try:
+            response = requests.get(url, params=params, timeout=10)
+            root = ET.fromstring(response.content)
+
+            body = root.find('body')
+            if body is None:
+                raise ValueError("응답에 <body> 없음")
+
+            items = body.find('items')
+            if items is None:
+                print(f"[{dt_str}] 데이터 없음.")
+                break  # 데이터 없는 건 재시도 안 함
+
+            for item in items.findall('item'):
+                row = {}
+                for child in item:
+                    tag = child.tag
+                    val = child.text.strip() if child.text else 'N/A'
+                    label = field_mapping.get(tag, tag)
+                    row[label] = val
+                data_by_year.setdefault(year, []).append(row)
+
+            if current_date.day == 1:
+                print(f"\n📆 {year}년 {current_date.strftime('%m월')} 처리 중...")
+
+            break  # 성공하면 재시도 탈출
+
+        except Exception as e:
+            print(f"⚠️ 오류 발생: {dt_str} | {e} (시도 {attempt}/{max_retries})")
+            if attempt == max_retries:
+                print(f"❌ {dt_str} 최종 실패. 스킵됨.\n")
+
+    # 다음 날짜로 이동
+    next_day = current_date + timedelta(days=1)
+
+    # 연도 경계 도달 시 저장 및 무결성 검사
+    if (year != next_day.year) or (next_day > end_date):
+        if year in data_by_year:
+            df_year = pd.DataFrame(data_by_year[year])
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"{station_name}_날씨_{year}_{timestamp}.csv"
+            filepath = os.path.join(save_dir, filename)
+            df_year.to_csv(filepath, index=False, encoding='utf-8-sig')
+            print(f"✅ 저장 완료: {filename} ({len(df_year)}건)")
+
+            # ✅ 무결성 검사
+            try:
+                df_check = pd.read_csv(filepath, encoding='utf-8-sig')
+                df_check['날짜'] = pd.to_datetime(df_check['날짜'], errors='coerce')
+
+                year_start = datetime(year, 1, 1)
+                year_end = datetime(year, 12, 31)
+                if year == end_date.year:
+                    year_end = end_date
+
+                expected = set(pd.date_range(year_start, year_end))
+                actual = set(df_check['날짜'].dropna())
+
+                missing = sorted(expected - actual)
+                if missing:
+                    print(f"⚠️ 무결성 오류: {year}년 누락된 날짜 {len(missing)}일")
+                    for d in missing[:5]:
+                        print(f"   - {d.strftime('%Y-%m-%d')}")
+                    if len(missing) > 5:
+                        print(f"   ... (이하 {len(missing)-5}개 생략)")
+                else:
+                    print(f"🟢 무결성 검사 통과: {year}년 모든 날짜 포함됨")
+            except Exception as e:
+                print(f"❌ 무결성 검사 실패: {e}")
+
+            del data_by_year[year]
+
+    current_date += timedelta(days=1)
+
+print("\n🎉 전체 저장 및 무결성 검사 완료!")
