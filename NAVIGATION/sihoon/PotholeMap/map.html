@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <style>
+        .leaflet-control-scale {
+            bottom: 60px !important;
+            left: 60px !important;
+        }
+        </style>
+        
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_5c91945c68e0613b92c32c94f2b630e1 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_5c91945c68e0613b92c32c94f2b630e1" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_5c91945c68e0613b92c32c94f2b630e1 = L.map(
+                "map_5c91945c68e0613b92c32c94f2b630e1",
+                {
+                    center: [37.5665, 126.978],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 15,
+  "zoomControl": false,
+  "preferCanvas": false,
+}
+
+                }
+            );
+            L.control.scale().addTo(map_5c91945c68e0613b92c32c94f2b630e1);
+
+            
+
+        
+    
+            var tile_layer_534e823d3c566640319004fb9eec73c6 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_534e823d3c566640319004fb9eec73c6.addTo(map_5c91945c68e0613b92c32c94f2b630e1);
+        
+    
+            var marker_f62d335bd3b28fb2428adc083345f29b = L.marker(
+                [37.5665, 126.978],
+                {
+}
+            ).addTo(map_5c91945c68e0613b92c32c94f2b630e1);
+        
+    
+            marker_f62d335bd3b28fb2428adc083345f29b.bindTooltip(
+                `<div>
+                     현재 위치
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_daed875cc1722e2aff7f7d4bdbd7d842 = L.marker(
+                [37.554722, 126.970833],
+                {
+}
+            ).addTo(map_5c91945c68e0613b92c32c94f2b630e1);
+        
+    
+            var icon_e031feb2d42206d8e1e76efc5e7f9df9 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "exclamation-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+            marker_daed875cc1722e2aff7f7d4bdbd7d842.bindTooltip(
+                `<div>
+                     포트홀 발생 지점
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_daed875cc1722e2aff7f7d4bdbd7d842.setIcon(icon_e031feb2d42206d8e1e76efc5e7f9df9);
+            
+    
+            var circle_marker_ab2615d516e699a5172ff8d1272ce898 = L.circleMarker(
+                [37.554722, 126.970833],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_5c91945c68e0613b92c32c94f2b630e1);
+        
+    
+            circle_marker_ab2615d516e699a5172ff8d1272ce898.bindTooltip(
+                `<div>
+                     감지됨: 25250518193030.0
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_724ced3227dd12c703ff504f0dc9f6c8 = L.marker(
+                [37.497942, 127.027621],
+                {
+}
+            ).addTo(map_5c91945c68e0613b92c32c94f2b630e1);
+        
+    
+            var icon_f3bd618791099e7eb461ccfb5e9a8c85 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "exclamation-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+            marker_724ced3227dd12c703ff504f0dc9f6c8.bindTooltip(
+                `<div>
+                     포트홀 발생 지점
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_724ced3227dd12c703ff504f0dc9f6c8.setIcon(icon_f3bd618791099e7eb461ccfb5e9a8c85);
+            
+    
+            var circle_marker_8605199b33fde7fd91d0a607f006dea0 = L.circleMarker(
+                [37.497942, 127.027621],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_5c91945c68e0613b92c32c94f2b630e1);
+        
+    
+            circle_marker_8605199b33fde7fd91d0a607f006dea0.bindTooltip(
+                `<div>
+                     감지됨: 25250518193030.0
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_3828d9082659b410cf049dfb5ce34cdd = L.marker(
+                [37.557192, 126.924903],
+                {
+}
+            ).addTo(map_5c91945c68e0613b92c32c94f2b630e1);
+        
+    
+            var icon_787db3780749ebda349d74ed73c9224e = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "exclamation-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+            marker_3828d9082659b410cf049dfb5ce34cdd.bindTooltip(
+                `<div>
+                     포트홀 발생 지점
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_3828d9082659b410cf049dfb5ce34cdd.setIcon(icon_787db3780749ebda349d74ed73c9224e);
+            
+    
+            var circle_marker_037f70e164903be96e097b5a262c6d8d = L.circleMarker(
+                [37.557192, 126.924903],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_5c91945c68e0613b92c32c94f2b630e1);
+        
+    
+            circle_marker_037f70e164903be96e097b5a262c6d8d.bindTooltip(
+                `<div>
+                     감지됨: 25250518193030.0
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_d8b887f1c0e0e1dbd6db54a65938452a = L.marker(
+                [37.513305, 127.100211],
+                {
+}
+            ).addTo(map_5c91945c68e0613b92c32c94f2b630e1);
+        
+    
+            var icon_b1b03c8f79d990b963407d0dd8dd640e = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "exclamation-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+            marker_d8b887f1c0e0e1dbd6db54a65938452a.bindTooltip(
+                `<div>
+                     포트홀 발생 지점
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d8b887f1c0e0e1dbd6db54a65938452a.setIcon(icon_b1b03c8f79d990b963407d0dd8dd640e);
+            
+    
+            var circle_marker_a7c45d058f9e8b9bc1a2b8dc4e00f572 = L.circleMarker(
+                [37.513305, 127.100211],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_5c91945c68e0613b92c32c94f2b630e1);
+        
+    
+            circle_marker_a7c45d058f9e8b9bc1a2b8dc4e00f572.bindTooltip(
+                `<div>
+                     감지됨: 25250518193030.0
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_3272cb48880c75244ff1c4d41907a614 = L.marker(
+                [37.566014, 126.982617],
+                {
+}
+            ).addTo(map_5c91945c68e0613b92c32c94f2b630e1);
+        
+    
+            var icon_8114511281c0bfde97cb215dc02000f6 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "exclamation-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+            marker_3272cb48880c75244ff1c4d41907a614.bindTooltip(
+                `<div>
+                     포트홀 발생 지점
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_3272cb48880c75244ff1c4d41907a614.setIcon(icon_8114511281c0bfde97cb215dc02000f6);
+            
+    
+            var circle_marker_ac8cbf96aa3ccccd27e2b5e4bb2fded5 = L.circleMarker(
+                [37.566014, 126.982617],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_5c91945c68e0613b92c32c94f2b630e1);
+        
+    
+            circle_marker_ac8cbf96aa3ccccd27e2b5e4bb2fded5.bindTooltip(
+                `<div>
+                     감지됨: 25250518193030.0
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_424b56c56867f77d6d490d399039a556 = L.marker(
+                [37.544579, 127.037824],
+                {
+}
+            ).addTo(map_5c91945c68e0613b92c32c94f2b630e1);
+        
+    
+            var icon_08c59245c6c88a2458c2e77b6737262b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "exclamation-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+            marker_424b56c56867f77d6d490d399039a556.bindTooltip(
+                `<div>
+                     포트홀 발생 지점
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_424b56c56867f77d6d490d399039a556.setIcon(icon_08c59245c6c88a2458c2e77b6737262b);
+            
+    
+            var circle_marker_450701c4c2e6b85c1422bfe63fe6cbe7 = L.circleMarker(
+                [37.544579, 127.037824],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_5c91945c68e0613b92c32c94f2b630e1);
+        
+    
+            circle_marker_450701c4c2e6b85c1422bfe63fe6cbe7.bindTooltip(
+                `<div>
+                     감지됨: 25250518193030.0
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_ef941f303558844e5526d99de9f36231 = L.marker(
+                [37.540654, 126.945263],
+                {
+}
+            ).addTo(map_5c91945c68e0613b92c32c94f2b630e1);
+        
+    
+            var icon_a66e49554119882fb830e28ed9c88e3a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "exclamation-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+            marker_ef941f303558844e5526d99de9f36231.bindTooltip(
+                `<div>
+                     포트홀 발생 지점
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ef941f303558844e5526d99de9f36231.setIcon(icon_a66e49554119882fb830e28ed9c88e3a);
+            
+    
+            var circle_marker_9ec0ae8a2fd74c246d7030d45f019c73 = L.circleMarker(
+                [37.540654, 126.945263],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_5c91945c68e0613b92c32c94f2b630e1);
+        
+    
+            circle_marker_9ec0ae8a2fd74c246d7030d45f019c73.bindTooltip(
+                `<div>
+                     감지됨: 25250518193030.0
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+</script>
+</html>

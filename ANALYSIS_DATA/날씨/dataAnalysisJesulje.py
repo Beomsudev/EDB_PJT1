@@ -13,7 +13,7 @@ else:
 plt.rcParams['axes.unicode_minus'] = False
 
 # 데이터 불러오기
-path = r"C:\Users\GME-NOTE\Desktop\EDB_PJT\ANALYSIS_DATA\날씨\포트홀_제설제_통합_시즌별.csv"
+path = r"/ANALYSIS_DATA/날씨_최종/포트홀_제설제_통합_시즌별.csv"
 df = pd.read_csv(path)
 
 # 회귀선 포함 산점도 (sns.regplot 사용)
@@ -39,7 +39,7 @@ else:
 plt.rcParams['axes.unicode_minus'] = False
 
 # 데이터 불러오기
-path = r"C:\Users\GME-NOTE\Desktop\EDB_PJT\ANALYSIS_DATA\날씨\포트홀_제설제_통합_시즌별.csv"
+path = r"/ANALYSIS_DATA/날씨_최종/포트홀_제설제_통합_시즌별.csv"
 df = pd.read_csv(path)
 
 # 제설시즌 정렬 (연도 순서대로)
